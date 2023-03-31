@@ -1,11 +1,27 @@
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
+import { random } from "lodash";
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import GroupInput from "../../Components/groupInput";
 import NavBar from "../../Components/Navbar";
+import ResultCard from "../../Components/resultCard";
+import { db } from "../../Firebase";
 import "../../Styles/globelStyles.css";
 import { diabetesInputs } from "../../Utils/utils";
 
 const DiabetesDisease = () => {
-  const [diabetesValues, setValues] = useState({
+  const location = useLocation();
+  const navigate = useNavigate();
+  // console.log(location.state.patientDetails, location.state.diseaseDetails);
+  const patientDetails = location.state.patientDetails;
+  const diseaseDetails = location.state.diseaseDetails;
+
+  const initialDiabetesValues = {
     pregnancies: "",
     glucose: "",
     bloodpressure: "",
@@ -14,7 +30,11 @@ const DiabetesDisease = () => {
     bmi: "",
     dpf: "",
     age: "",
-  });
+  };
+  const [diabetesValues, setValues] = useState(initialDiabetesValues);
+  const [loader, setLoader] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [result, setResult] = useState(0);
 
   const onChange = (inputName, value) => {
     console.log(inputName, value);
@@ -22,7 +42,34 @@ const DiabetesDisease = () => {
   };
 
   const onSubmit = () => {
-    console.log({ diabetesValues });
+    setLoader(true);
+    setTimeout(() => {
+      setShowResults(true);
+      setLoader(false);
+      setResult(random(0, 1));
+    }, 2000);
+  };
+
+  const onSave = async () => {
+    setShowResults(false);
+    setLoader(true);
+    const payload = {
+      patientDiseaseInputValues: diabetesValues,
+      ...patientDetails,
+      ...diseaseDetails,
+      createdAt: new Date(),
+      result: "0",
+    };
+    console.log(payload);
+    try {
+      await addDoc(collection(db, "diseaseTests"), payload);
+      alert("Process successful");
+    } catch (error) {
+      alert("Process unsuccessful, Something went wrong");
+    }
+    setLoader(false);
+    setValues(initialDiabetesValues);
+    navigate("/newTest");
   };
 
   return (
@@ -33,12 +80,17 @@ const DiabetesDisease = () => {
           <h1>Diabetes Prediction</h1>
         </div>
         <div className="input-wrapper">
-          <GroupInput
-            data={diabetesInputs}
-            dataValue={diabetesValues}
-            onChange={onChange}
-            onSubmit={onSubmit}
-          />
+          {!showResults ? (
+            <GroupInput
+              data={diabetesInputs}
+              dataValue={diabetesValues}
+              onChange={onChange}
+              onSubmit={onSubmit}
+              isLoading={loader}
+            />
+          ) : (
+            <ResultCard title={"Diabetes"} result={result} callback={onSave} />
+          )}
         </div>
       </div>
     </div>

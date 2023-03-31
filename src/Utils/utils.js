@@ -6,48 +6,51 @@ export const navBarOptions = [
   },
   {
     id: 2,
-    title: "Diseases",
-    path: "/diseaseDetails",
+    title: "New Test",
+    path: "/newTest",
   },
   {
     id: 3,
+    title: "Analysis",
+    path: "/analysis",
+  },
+];
+
+export const diseases = [
+  {
+    id: 1,
     title: "Diabetes",
     path: "/diabetes",
   },
   {
-    id: 4,
+    id: 2,
     title: "Breast Cancer",
     path: "/breastCancer",
   },
   {
-    id: 5,
+    id: 3,
     title: "Heart",
     path: "/heart",
   },
   {
-    id: 6,
+    id: 4,
     title: "Kidney",
     path: "/kidney",
   },
   {
-    id: 7,
+    id: 5,
     title: "Liver",
     path: "/liver",
   },
   {
-    id: 8,
+    id: 6,
     title: "Malaria",
     path: "/malaria",
   },
   {
-    id: 9,
+    id: 7,
     title: "Pneumonia",
     path: "/pneumonia",
-  },
-  {
-    id: 10,
-    title: "Analysis",
-    path: "/analysis",
   },
 ];
 
@@ -511,3 +514,30 @@ export const liverDieasesInput = [
     id: 10,
   },
 ];
+
+export const addNewPatientInputs = [
+  {
+    id: 1,
+    name: "firstName",
+    placeholder: "First Name",
+  },
+  {
+    id: 2,
+    name: "lastName",
+    placeholder: "Last Name",
+  },
+  {
+    id: 3,
+    name: "age",
+    placeholder: "Age",
+  },
+  {
+    id: 4,
+    name: "email",
+    placeholder: "Email",
+  },
+];
+
+export const getDiseaseNavigationPath = (diseaseName) => {
+  return diseases.find((item) => item.title === diseaseName).path;
+};

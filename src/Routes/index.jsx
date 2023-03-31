@@ -15,6 +15,8 @@ import MalariaDiseasePreduction from "../Screens/malariaDiseasePreduction";
 import PneumoniaPredictor from "../Screens/pneumoniaPredictor";
 import HeartDisease from "../Screens/heart";
 import KidneyDisease from "../Screens/kidney";
+import NewTest from "../Screens/newTest";
+import AddNewPatient from "../Screens/addNewPatient";
 
 const AppRoute = () => {
   return (
@@ -22,6 +24,8 @@ const AppRoute = () => {
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/diseaseDetails" element={<DiseaseDetails />} />
+        <Route path="/newTest" element={<NewTest />} />
+        <Route path="/addNewPatient" element={<AddNewPatient />} />
         <Route path="/diabetes" element={<DiabetesDisease />} />
         <Route path="/breastCancer" element={<BreastCancerDisease />} />
         <Route path="/heart" element={<HeartDisease />} />

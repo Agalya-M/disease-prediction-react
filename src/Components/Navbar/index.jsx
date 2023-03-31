@@ -11,7 +11,11 @@ const NavBar = () => {
   return (
     <div className="nav-container">
       {navBarOptions.map((item) => {
-        return <p onClick={() => onPressHandler(item.path)}>{item.title}</p>;
+        return (
+          <p key={item.id} onClick={() => onPressHandler(item.path)}>
+            {item.title}
+          </p>
+        );
       })}
     </div>
   );
