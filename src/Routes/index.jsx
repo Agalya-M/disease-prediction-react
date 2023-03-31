@@ -17,6 +17,7 @@ import HeartDisease from "../Screens/heart";
 import KidneyDisease from "../Screens/kidney";
 import NewTest from "../Screens/newTest";
 import AddNewPatient from "../Screens/addNewPatient";
+import PatientReports from "../Screens/reports";
 
 const AppRoute = () => {
   return (
@@ -26,6 +27,7 @@ const AppRoute = () => {
         <Route path="/diseaseDetails" element={<DiseaseDetails />} />
         <Route path="/newTest" element={<NewTest />} />
         <Route path="/addNewPatient" element={<AddNewPatient />} />
+        <Route path="/reports" element={<PatientReports />} />
         <Route path="/diabetes" element={<DiabetesDisease />} />
         <Route path="/breastCancer" element={<BreastCancerDisease />} />
         <Route path="/heart" element={<HeartDisease />} />

@@ -27,7 +27,7 @@ const NewTest = () => {
       await getDocs(collection(db, "patients")).then((querySnapshot) => {
         const apiPatientData = querySnapshot.docs.map((doc) => ({
           ...doc.data(),
-          id: doc.id,
+          patientDocid: doc.id,
         }));
         setPatientData(apiPatientData);
       });
@@ -53,7 +53,7 @@ const NewTest = () => {
       );
     }
     const selectedPatientDetails = patientData.find(
-      (item) => item.id === selectedPatient
+      (item) => item.patientDocid === selectedPatient
     );
     console.log(selectedDisease);
     const selectedDiseaseDetails = diseasesData.find(
@@ -98,8 +98,8 @@ const NewTest = () => {
                     {patientData.length > 0 &&
                       patientData.map((item) => (
                         <option
-                          key={item.id}
-                          value={item.id}
+                          key={item.patientDocid}
+                          value={item.patientDocid}
                         >{`${item?.firstName} ${item?.lastName}`}</option>
                       ))}
                   </select>

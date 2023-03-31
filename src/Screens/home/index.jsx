@@ -17,7 +17,7 @@ const Home = () => {
           </div>
           <div className="title-wrapper">
             <h1>Disease Prediction</h1>
-            <p onClick={() => navigate("/details")}>Explore &rarr;</p>
+            <p onClick={() => navigate("/newTest")}>Test &rarr;</p>
           </div>
         </div>
       </div>

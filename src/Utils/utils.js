@@ -14,6 +14,11 @@ export const navBarOptions = [
     title: "Analysis",
     path: "/analysis",
   },
+  {
+    id: 4,
+    title: "Reports",
+    path: "/reports",
+  },
 ];
 
 export const diseases = [
