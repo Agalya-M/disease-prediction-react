@@ -5,6 +5,8 @@ import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutl
 import _ from "lodash";
 import emailjs from "@emailjs/browser";
 import { json } from "react-router-dom";
+import moment from "moment/moment";
+import { Timestamp } from "firebase/firestore";
 
 const ReportCard = ({ data, activeCardId, handleSelect }) => {
   const handleArrowPress = (id) => {
@@ -34,11 +36,30 @@ const ReportCard = ({ data, activeCardId, handleSelect }) => {
     }
   };
 
+  function getDateFromTimestamp(seconds, nanoseconds) {
+    const milliseconds = nanoseconds / 1000000; // Convert nanoseconds to milliseconds
+    const timestamp = seconds * 1000 + milliseconds; // Combine seconds and milliseconds
+    return new Date(timestamp);
+  }
+
+  const seconds = data.createdAt.seconds;
+  const nanoseconds = data.createdAt.nanoseconds;
+  const date = getDateFromTimestamp(seconds, nanoseconds);
+
   return (
     <div className="header-wrapper" key={data.id}>
       <div className="header-title">
         {/* <h3>{data.title}</h3> */}
-        <h3>Report ID: {data.id}</h3>
+        <h3>
+          {data.firstName} | {data.diseaseName} |{" "}
+          {moment(getDateFromTimestamp(seconds, nanoseconds)).format(
+            "MMMM Do YYYY"
+          )}
+          {moment().diff(
+            moment(getDateFromTimestamp(seconds, nanoseconds)),
+            "minutes"
+          ) < 1 && <span className="new-info">New</span>}
+        </h3>
         <div className="arrow-wrapper" onClick={handleArrowPress}>
           {activeCardId !== data.id ? (
             <KeyboardArrowDownOutlinedIcon className="arrow-icon" />
@@ -71,20 +92,28 @@ const ReportCard = ({ data, activeCardId, handleSelect }) => {
                 <p className="report-details">
                   Result: {Number(data.result) ? "Positive" : "Negative"}
                 </p>
+                <p className="report-details">
+                  Date/Time:{" "}
+                  {moment(getDateFromTimestamp(seconds, nanoseconds)).format(
+                    "MMMM Do YYYY, h:mm a"
+                  )}
+                </p>
               </div>
             </div>
-           {data?.patientDiseaseInputValues && <div className="division">
-              <h4 className="report-sub-title">Input Details</h4>
+            {data?.patientDiseaseInputValues && (
               <div className="division">
-                {Object.entries(data.patientDiseaseInputValues).map(
-                  ([key, value]) => (
-                    <p className="report-details" key={key}>
-                      {key}: {value}
-                    </p>
-                  )
-                )}
+                <h4 className="report-sub-title">Input Details</h4>
+                <div className="division">
+                  {Object.entries(data.patientDiseaseInputValues).map(
+                    ([key, value]) => (
+                      <p className="report-details" key={key}>
+                        {key}: {value}
+                      </p>
+                    )
+                  )}
+                </div>
               </div>
-            </div>}
+            )}
           </div>
           <div className="mail-wrapper">
             <div className="mail-container">

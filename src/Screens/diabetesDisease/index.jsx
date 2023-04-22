@@ -55,7 +55,7 @@ const DiabetesDisease = () => {
       patientDiseaseInputValues: diabetesValues,
       ...patientDetails,
       ...diseaseDetails,
-      createdAt: new Date(),
+      createdAt: new Date().toLocaleDateString(),
       result,
     };
     console.log(payload);

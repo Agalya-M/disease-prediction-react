@@ -74,3 +74,12 @@
   color: white;
   cursor: pointer;
 }
+
+.new-info {
+  font-size: small;
+  color: white;
+  background-color: blue;
+  border-radius: 30px;
+  padding: 5px 10px;
+  margin-left: 10px;
+}

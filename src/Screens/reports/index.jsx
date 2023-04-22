@@ -27,7 +27,10 @@ const PatientReports = () => {
         if (apiReportsData.length === 0) {
           setReportsData("No data");
         } else {
-          setReportsData(apiReportsData);
+          const sortedData = apiReportsData.sort(
+            (a, b) => b.createdAt - a.createdAt
+          );
+          setReportsData(sortedData);
         }
       });
     } catch (error) {
