@@ -13,13 +13,13 @@ const ReportCard = ({ data, activeCardId, handleSelect }) => {
 
   const handleClickMail = async () => {
     try {
-      const serviceID = "service_jq5frv1";
+      const serviceID = "service_uukt9jp";
       const templateID = "template_jcdtba8";
       const userID = "9J_5ifDvYMkMWSW-2";
 
       const message = {
         to_mail: data.email, // recipient email address
-        from: "dharun123wizz@gmail.com", // sender email address
+        from: "agalya12172001@gmail.com", // sender email address
         to_name: `${data.firstName} ${data.lastName}`,
         subject: "Test Report", // email subject
         result: Number(data.result) ? "Positive" : "Negative",
@@ -73,7 +73,7 @@ const ReportCard = ({ data, activeCardId, handleSelect }) => {
                 </p>
               </div>
             </div>
-            <div className="division">
+           {data?.patientDiseaseInputValues && <div className="division">
               <h4 className="report-sub-title">Input Details</h4>
               <div className="division">
                 {Object.entries(data.patientDiseaseInputValues).map(
@@ -84,7 +84,7 @@ const ReportCard = ({ data, activeCardId, handleSelect }) => {
                   )
                 )}
               </div>
-            </div>
+            </div>}
           </div>
           <div className="mail-wrapper">
             <div className="mail-container">
