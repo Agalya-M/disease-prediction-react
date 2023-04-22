@@ -3,9 +3,17 @@ import GroupInput from "../../Components/groupInput";
 import NavBar from "../../Components/Navbar";
 import "../../Styles/globelStyles.css";
 import { heartDieasesInputs } from "../../Utils/utils";
+import { useLocation, useNavigate } from "react-router-dom";
+import { saveDiseaseTestData } from "../../Firebase";
+import ResultCard from "../../Components/resultCard";
 
 const HeartDisease = () => {
-  const [heartDiseaseValues, setValues] = useState({
+  const location = useLocation();
+  const navigate = useNavigate();
+  const patientDetails = location.state.patientDetails;
+  const diseaseDetails = location.state.diseaseDetails;
+
+  const initialHeartDiseaseValues = {
     age: "",
     sex: "",
     cp: "",
@@ -19,15 +27,40 @@ const HeartDisease = () => {
     slope: "",
     ca: "",
     thal: "",
-  });
+  };
+  const [heartDiseaseValues, setValues] = useState(initialHeartDiseaseValues);
+  const [loader, setLoader] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [result, setResult] = useState(0);
 
   const onChange = (inputName, value) => {
-    console.log(inputName, value);
     setValues({ ...heartDiseaseValues, [inputName]: value });
   };
 
   const onSubmit = () => {
-    console.log({ heartDiseaseValues });
+    setLoader(true);
+    setTimeout(() => {
+      setShowResults(true);
+      setLoader(false);
+      setResult(random(0, 1));
+    }, 2000);
+  };
+
+  const onSave = async () => {
+    setShowResults(false);
+    setLoader(true);
+    const payload = {
+      patientDiseaseInputValues: heartDiseaseValues,
+      ...patientDetails,
+      ...diseaseDetails,
+      createdAt: new Date(),
+      result,
+    };
+    console.log(payload);
+    await saveDiseaseTestData(payload);
+    setLoader(false);
+    setValues(initialHeartDiseaseValues);
+    navigate("/newTest");
   };
 
   return (
@@ -35,15 +68,24 @@ const HeartDisease = () => {
       <NavBar />
       <div className="screen-wrapper-2">
         <div className="title">
-          <h1>Heart Dieases Prediction</h1>
+          <h1>Heart Disease Prediction</h1>
         </div>
         <div className="input-wrapper">
-          <GroupInput
-            data={heartDieasesInputs}
-            dataValue={heartDiseaseValues}
-            onChange={onChange}
-            onSubmit={onSubmit}
-          />
+          {!showResults ? (
+            <GroupInput
+              data={heartDieasesInputs}
+              dataValue={heartDiseaseValues}
+              onChange={onChange}
+              onSubmit={onSubmit}
+              isLoading={loader}
+            />
+          ) : (
+            <ResultCard
+              title={"Heart Disease"}
+              result={result}
+              callback={onSave}
+            />
+          )}
         </div>
       </div>
     </div>
