@@ -36,7 +36,6 @@ const DiabetesDisease = () => {
   const [result, setResult] = useState(0);
 
   const onChange = (inputName, value) => {
-    console.log(inputName, value);
     setValues({ ...diabetesValues, [inputName]: value });
   };
 

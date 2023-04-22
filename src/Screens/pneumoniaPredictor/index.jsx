@@ -2,10 +2,18 @@ import React, { useState } from "react";
 import ImageUpload from "../../Components/ImageInput";
 import NavBar from "../../Components/Navbar";
 import "../../Styles/globelStyles.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { saveDiseaseTestData } from "../../Firebase";
 
 const PneumoniaPredictor = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const patientDetails = location.state.patientDetails;
+  const diseaseDetails = location.state.diseaseDetails;
+
   const [result, setResult] = useState(null);
   const [isLoading, setLoading] = useState(false);
+
   const onSubmit = (e) => {
     setLoading(true);
     e.preventDefault();
@@ -18,14 +26,28 @@ const PneumoniaPredictor = () => {
       resp.json().then((data) => {
         console.log("malaria pred res => ", data);
         setResult(data.message);
-        isLoading(false);
+        setLoading(false);
       });
     });
   };
 
-  const onContinue = () => {
-    setResult(null);
+  const onSave = async () => {
+    setLoading(true);
+    const payload = {
+      ...patientDetails,
+      ...diseaseDetails,
+      createdAt: new Date(),
+      result: result,
+    };
+    console.log(payload);
+    await saveDiseaseTestData(payload);
     setLoading(false);
+    navigate("/newTest");
+  };
+
+  const onContinue = () => {
+    onSave();
+    setResult(null);
   };
 
   return (

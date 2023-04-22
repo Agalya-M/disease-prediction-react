@@ -3,11 +3,10 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ImageUpload from "../../Components/ImageInput";
 import NavBar from "../../Components/Navbar";
-import { db } from "../../Firebase";
+import { db, saveDiseaseTestData } from "../../Firebase";
 import "../../Styles/globelStyles.css";
 
 const MalariaDiseasePreduction = () => {
-
   const location = useLocation();
   const navigate = useNavigate();
   // console.log(location.state.patientDetails, location.state.diseaseDetails);
@@ -16,7 +15,6 @@ const MalariaDiseasePreduction = () => {
 
   const [result, setResult] = useState(null);
   const [isLoading, setLoading] = useState(false);
-  // const [loader, setLoader] = useState(false);
   const [showResults, setShowResults] = useState(false);
 
   const onSubmit = (e) => {
@@ -27,21 +25,21 @@ const MalariaDiseasePreduction = () => {
       // mode: "no-cors",
       method: "POST",
       body: formData,
-    }).then((resp) => {
-      console.log("res", resp);
-      resp.json().then((data) => {
-        console.log("malaria pred res => ", data);
-        setResult(data.message);
-        setLoading(false);
-      });
-    }).catch((err)=> {
-      console.log(err);
     })
+      .then((resp) => {
+        console.log("res", resp);
+        resp.json().then((data) => {
+          console.log("malaria pred res => ", data);
+          setResult(data.message);
+          setLoading(false);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onSave = async () => {
-    console.log({result});
-    // setShowResults(false);
     setLoading(true);
     const payload = {
       ...patientDetails,
@@ -50,21 +48,14 @@ const MalariaDiseasePreduction = () => {
       result: result,
     };
     console.log(payload);
-    try {
-      await addDoc(collection(db, "diseaseTests"), payload);
-      alert("Process successful");
-    } catch (error) {
-      alert("Process unsuccessful, Something went wrong");
-    }
+    await saveDiseaseTestData(payload);
     setLoading(false);
-    
     navigate("/newTest");
   };
 
   const onContinue = () => {
     onSave();
     setResult(null);
-    // setLoading(false);
   };
 
   return (
