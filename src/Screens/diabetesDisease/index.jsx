@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import GroupInput from "../../Components/groupInput";
 import NavBar from "../../Components/Navbar";
 import ResultCard from "../../Components/resultCard";
-import { db } from "../../Firebase";
+import { db, saveDiseaseTestData } from "../../Firebase";
 import "../../Styles/globelStyles.css";
 import { diabetesInputs } from "../../Utils/utils";
 
@@ -58,15 +58,10 @@ const DiabetesDisease = () => {
       ...patientDetails,
       ...diseaseDetails,
       createdAt: new Date(),
-      result: "0",
+      result,
     };
     console.log(payload);
-    try {
-      await addDoc(collection(db, "diseaseTests"), payload);
-      alert("Process successful");
-    } catch (error) {
-      alert("Process unsuccessful, Something went wrong");
-    }
+    await saveDiseaseTestData(payload);
     setLoader(false);
     setValues(initialDiabetesValues);
     navigate("/newTest");
