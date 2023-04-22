@@ -17,7 +17,6 @@ import { diabetesInputs } from "../../Utils/utils";
 const DiabetesDisease = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  // console.log(location.state.patientDetails, location.state.diseaseDetails);
   const patientDetails = location.state.patientDetails;
   const diseaseDetails = location.state.diseaseDetails;
 

@@ -74,7 +74,7 @@ const KidneyDisease = () => {
       <NavBar />
       <div className="screen-wrapper-2">
         <div className="title">
-          <h1>Kidney Dieases Prediction</h1>
+          <h1>Kidney Disease Prediction</h1>
         </div>
         <div className="input-wrapper">
           {!showResults ? (
@@ -86,7 +86,11 @@ const KidneyDisease = () => {
               isLoading={loader}
             />
           ) : (
-            <ResultCard title={"Kidney"} result={result} callback={onSave} />
+            <ResultCard
+              title={"Kidney Disease"}
+              result={result}
+              callback={onSave}
+            />
           )}
         </div>
       </div>
